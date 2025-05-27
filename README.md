@@ -1,15 +1,57 @@
-🎮 EduClass – Plataforma Gamificada de Ranking Escolar
-EduClass es una aplicación web educativa desarrollada para motivar el rendimiento académico en estudiantes de secundaria mediante técnicas de gamificación. Utiliza un sistema de recompensas con monedas virtuales llamadas ClassCoins (CC), rankings por temporadas y logros para fomentar la participación activa, la entrega puntual de tareas y la mejora continua.
+# 🎮 EduClass – Plataforma Gamificada de Ranking Escolar
 
-🔑 Funcionalidades principales:
-🏅 Sistema de ranking en tiempo real por acumulación de ClassCoins.
+**EduClass** es una aplicación web gamificada diseñada para transformar la experiencia educativa en colegios de nivel secundario. A través de un sistema de **monedas virtuales (ClassCoins)**, **rankings por temporadas** y **logros desbloqueables**, EduClass motiva a los estudiantes a participar activamente, entregar tareas puntualmente y mejorar su rendimiento académico de forma divertida y competitiva.
 
-🎯 Recompensas por tareas entregadas correctamente y retos académicos.
+---
 
-🧠 Bonos de racha, medallas virtuales y clasificación visual (oro, plata, bronce).
+## 🚀 Características principales
 
-📅 Administración por temporadas académicas (mensual, bimestral, etc.).
+- 🏅 **Sistema de ranking** por acumulación de ClassCoins (CC)
+- 📈 Visualización en tiempo real de posiciones y progreso
+- 🎖️ Recompensas por tareas bien realizadas, constancia y retos especiales
+- 🧠 Bonos por racha, medallas e insignias digitales
+- 📅 Temporadas académicas (mensual, bimestral), con historial de resultados
+- 👨‍🏫 Panel administrativo para docentes y seguimiento individual/grupal
 
-📊 Panel docente para monitoreo de progreso y estadísticas.
+---
 
-Desarrollado como iniciativa de un equipo interdisciplinario para transformar la educación secundaria en Bolivia. Actualmente en fase de implementación en unidades educativas locales.
+## 📦 Modelo de datos (resumen)
+
+| Entidad     | Atributos Clave                                                 |
+|-------------|------------------------------------------------------------------|
+| Estudiante  | `id`, `nombre`, `correo`, `totalCC`, `racha`, `medallas`        |
+| Tarea       | `id`, `titulo`, `fecha_entrega`, `estado`, `estudiante_id`      |
+| MonedaCC    | `id`, `cantidad`, `motivo`, `fecha`, `estudiante_id`            |
+| Ranking     | `id`, `temporada`, `estudiante_id`, `totalCC`, `posición`       |
+| Temporada   | `id`, `nombre`, `fecha_inicio`, `fecha_fin`, `estado`           |
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+- Frontend: ReactJS
+- Backend: Express
+- Base de datos: Mysql
+- Deploy: Render y Vercel
+
+---
+
+## 📚 Objetivos pedagógicos
+
+- ✅ Estimular la entrega puntual y correcta de tareas
+- ✅ Fomentar la competencia sana entre estudiantes
+- ✅ Motivar el aprendizaje continuo con incentivos y visibilidad del progreso
+- ✅ Reforzar el acompañamiento docente mediante datos gamificados
+
+---
+
+## 🌍 Estado del proyecto
+
+Actualmente en **fase de desarrollo**, con visión de implementación en instituciones educativas y futuras adaptaciones para diversos contextos escolares.
+
+---
+
+## ✍️ Autor
+
+**Desarrollado por Edgar Rojas**  
+Ingeniero de sistemas con interés en la docencia y la innovación educativa.
