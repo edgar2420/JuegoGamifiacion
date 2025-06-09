@@ -3,6 +3,7 @@ const Docente = db.docentes;
 const Tarea = db.tareas;
 const Temporada = db.temporadas;
 const Ranking = db.rankings;
+const Estudiante = db.estudiantes;
 
 // Crear docente
 exports.crearDocente = async (req, res) => {
@@ -14,7 +15,7 @@ exports.crearDocente = async (req, res) => {
   }
 };
 
-// Obtener docentes
+// Obtener todos los docentes
 exports.obtenerDocentes = async (req, res) => {
   try {
     const docentes = await Docente.findAll();
@@ -24,12 +25,30 @@ exports.obtenerDocentes = async (req, res) => {
   }
 };
 
+// Obtener perfil de docente por usuarioId
+exports.obtenerPerfilDocente = async (req, res) => {
+  try {
+    const docente = await Docente.findOne({
+      where: { usuarioId: req.params.usuarioId },
+    });
+
+    if (!docente) {
+      return res.status(404).json({ mensaje: "Docente no encontrado" });
+    }
+
+    res.json(docente);
+  } catch (error) {
+    console.error("Error al obtener perfil del docente:", error);
+    res.status(500).json({ mensaje: "Error al obtener perfil del docente", error });
+  }
+};
+
 // Consultar desempeño de estudiantes por docente
 exports.obtenerDesempeno = async (req, res) => {
   try {
     const tareas = await Tarea.findAll({
       where: { docenteId: req.params.id },
-      include: ["estudiante"]
+      include: [{ model: Estudiante, as: "estudiante" }],
     });
     res.json(tareas);
   } catch (error) {
@@ -51,7 +70,9 @@ exports.crearTemporada = async (req, res) => {
 exports.cerrarTemporada = async (req, res) => {
   try {
     const temporada = await Temporada.findByPk(req.params.id);
-    if (!temporada) return res.status(404).json({ mensaje: "Temporada no encontrada" });
+    if (!temporada) {
+      return res.status(404).json({ mensaje: "Temporada no encontrada" });
+    }
 
     temporada.estado = "inactiva";
     await temporada.save();
@@ -61,22 +82,20 @@ exports.cerrarTemporada = async (req, res) => {
   }
 };
 
-// Crear tarea como Docente (asignar a estudiante)
-exports.crearTareaDocente = async (req, res) => {
+// obtener perfil docente
+exports.obtenerPerfilDocente = async (req, res) => {
   try {
-    const { titulo, fecha_entrega, estudianteId, docenteId } = req.body;
-
-    const nuevaTarea = await db.tareas.create({
-      titulo,
-      fecha_entrega,
-      estado: "pendiente",
-      estudianteId,
-      docenteId,
+    const docente = await Docente.findOne({
+      where: { usuarioId: req.params.usuarioId },
     });
 
-    res.status(201).json({ mensaje: "Tarea asignada correctamente", tarea: nuevaTarea });
+    if (!docente) {
+      return res.status(404).json({ mensaje: "Docente no encontrado" });
+    }
+
+    res.json(docente);
   } catch (error) {
-    console.error("Error al asignar tarea:", error);
-    res.status(500).json({ mensaje: "Error al asignar tarea", error });
+    console.error("Error al obtener perfil del docente:", error);
+    res.status(500).json({ mensaje: "Error al obtener perfil del docente", error });
   }
 };

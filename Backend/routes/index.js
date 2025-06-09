@@ -1,5 +1,5 @@
 module.exports = app => {
-  console.log("Cargando rutas..."); // prueba
+  console.log("Cargando rutas...");
 
   require("./auth.routes")(app);
   require("./usuario.routes")(app);
@@ -11,5 +11,5 @@ module.exports = app => {
   require("./temporada.routes")(app);
   require("./moneda.routes")(app);
 
-  console.log("Todas las rutas cargadas"); // prueba
+  console.log("Todas las rutas cargadas");
 };

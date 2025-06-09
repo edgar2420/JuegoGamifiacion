@@ -17,7 +17,7 @@ exports.login = async (req, res) => {
         }
 
         // Verifica si las contraseñas coinciden
-        const isPasswordValid = await bcrypt.compare(contrasena, usuario.contrasena); 
+        const isPasswordValid = await bcrypt.compare(contrasena, usuario.contrasena);
 
         if (!isPasswordValid) {
             return res.status(401).json({ msg: "Usuario o contraseña incorrectos" });
@@ -32,9 +32,41 @@ exports.login = async (req, res) => {
             usuarioId: usuario.id
         });
 
+        // Buscar estudianteId o docenteId si corresponde
+        let estudianteId = null;
+        let docenteId = null;
+
+        if (usuario.rol === "estudiante") {
+            const estudiante = await db.estudiantes.findOne({
+                where: { usuarioId: usuario.id }
+            });
+
+            if (estudiante) {
+                estudianteId = estudiante.id;
+            }
+        }
+
+        if (usuario.rol === "docente") {
+            const docente = await db.docentes.findOne({
+                where: { usuarioId: usuario.id }
+            });
+
+            if (docente) {
+                docenteId = docente.id;
+            }
+        }
+
+        // DEVOLVER USUARIO COMPLETO + TOKEN + estudianteId/docenteId (como espera el frontend)
         res.json({
             token,
-            rol: usuario.rol
+            usuario: {
+                id: usuario.id,
+                nombre: usuario.nombre,
+                correo: usuario.correo,
+                rol: usuario.rol,
+                estudianteId,  // ahora sí lo mandamos
+                docenteId      // ahora sí lo mandamos
+            }
         });
     } catch (error) {
         console.error(error);
@@ -51,7 +83,7 @@ exports.logout = async (req, res) => {
         }
 
         const [bearer, token] = authorization.split(" ");
-        
+
         if (bearer !== "Bearer" || !token) {
             return res.status(401).json({ message: "Unauthorized - Invalid token format" });
         }
@@ -80,7 +112,7 @@ exports.me = async (req, res) => {
         }
 
         const [bearer, token] = authorization.split(" ");
-        
+
         if (bearer !== "Bearer" || !token) {
             return res.status(401).json({ message: "Unauthorized - Invalid token format" });
         }
@@ -101,12 +133,38 @@ exports.me = async (req, res) => {
             return res.status(401).json({ message: "Unauthorized - User not found" });
         }
 
+        // Buscar estudianteId o docenteId si corresponde
+        let estudianteId = null;
+        let docenteId = null;
+
+        if (usuario.rol === "estudiante") {
+            const estudiante = await db.estudiantes.findOne({
+                where: { usuarioId: usuario.id }
+            });
+
+            if (estudiante) {
+                estudianteId = estudiante.id;
+            }
+        }
+
+        if (usuario.rol === "docente") {
+            const docente = await db.docentes.findOne({
+                where: { usuarioId: usuario.id }
+            });
+
+            if (docente) {
+                docenteId = docente.id;
+            }
+        }
+
         res.json({
             usuario: {
                 id: usuario.id,
                 nombre: usuario.nombre,
                 correo: usuario.correo,
-                rol: usuario.rol
+                rol: usuario.rol,
+                estudianteId,
+                docenteId
             }
         });
     } catch (error) {
