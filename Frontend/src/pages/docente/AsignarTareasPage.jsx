@@ -5,46 +5,64 @@ import axiosInstance from "../../api/axiosInstance";
 import Button from "../../components/Button";
 
 const AsignarTareasPage = () => {
-  const [estudiantes, setEstudiantes] = useState([]);
   const [formData, setFormData] = useState({
     titulo: "",
-    fecha_entrega: "",
-    estudianteId: "",
+    fecha_inicio: "",
+    fecha_fin: ""
   });
   const [error, setError] = useState("");
+  const [tareas, setTareas] = useState([]);
+  const [docenteId, setDocenteId] = useState(null);
 
   useEffect(() => {
-    cargarEstudiantes();
+    obtenerPerfilDocente();
+    cargarTareas();
   }, []);
 
-  const cargarEstudiantes = async () => {
+  const obtenerPerfilDocente = async () => {
     try {
-      const res = await axiosInstance.get("/estudiante/obtener"); // Asegúrate que tienes este endpoint
-      setEstudiantes(res.data);
+      const user = JSON.parse(localStorage.getItem("user"));
+      const res = await axiosInstance.get(`/docentes/obtenerPerfil/${user.id}`);
+      setDocenteId(res.data.id);
+    } catch (err) {
+      console.error("Error al obtener perfil del docente:", err);
+      setError("Error al obtener perfil del docente");
+    }
+  };
+
+  const cargarTareas = async () => {
+    try {
+      const res = await axiosInstance.get("/tareas/todas");
+      setTareas(res.data);
     } catch (err) {
       console.error(err);
-      setError("Error al obtener estudiantes");
     }
   };
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const docenteId = JSON.parse(localStorage.getItem("user")).id; // Suponiendo que tienes user en localStorage
-      await axiosInstance.post("/tarea/crear-docente", {
+      if (!docenteId) {
+        alert("No se pudo obtener el perfil del docente.");
+        return;
+      }
+
+      await axiosInstance.post("/tareas/crear-docente", {
         ...formData,
-        docenteId,
+        docenteId
       });
-      setFormData({ titulo: "", fecha_entrega: "", estudianteId: "" });
+
+      setFormData({ titulo: "", fecha_inicio: "", fecha_fin: "" });
       setError("");
-      alert("Tarea asignada correctamente");
+      alert("Tarea asignada a todos los estudiantes correctamente");
+      await cargarTareas();
     } catch (err) {
       console.error(err);
       setError("Error al asignar tarea");
@@ -59,7 +77,7 @@ const AsignarTareasPage = () => {
         <main style={{ padding: "1rem", overflowY: "auto" }}>
           <h1>Asignar Tareas</h1>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
             <div>
               <label>Título:</label>
               <input
@@ -71,34 +89,55 @@ const AsignarTareasPage = () => {
               />
             </div>
             <div>
-              <label>Fecha entrega:</label>
+              <label>Fecha de inicio:</label>
               <input
                 type="date"
-                name="fecha_entrega"
-                value={formData.fecha_entrega}
+                name="fecha_inicio"
+                value={formData.fecha_inicio}
                 onChange={handleInputChange}
                 required
               />
             </div>
             <div>
-              <label>Estudiante:</label>
-              <select
-                name="estudianteId"
-                value={formData.estudianteId}
+              <label>Fecha de fin:</label>
+              <input
+                type="date"
+                name="fecha_fin"
+                value={formData.fecha_fin}
                 onChange={handleInputChange}
                 required
-              >
-                <option value="">Seleccione un estudiante</option>
-                {estudiantes.map((est) => (
-                  <option key={est.id} value={est.id}>
-                    {est.nombre}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
             <Button type="submit">Asignar Tarea</Button>
             {error && <p style={{ color: "red" }}>{error}</p>}
           </form>
+
+          <h2>Listado de Tareas Asignadas</h2>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Fecha de inicio</th>
+                <th>Fecha de entrega</th>
+                <th>Estudiante</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tareas.map((tarea) => (
+                <tr
+                  key={tarea.id}
+                  style={{ textAlign: "center", borderBottom: "1px solid #ddd" }}
+                >
+                  <td>{tarea.titulo}</td>
+                  <td>{tarea.fecha_inicio}</td>
+                  <td>{tarea.fecha_entrega}</td>
+                  <td>{tarea.estudiante?.nombre}</td>
+                  <td>{tarea.estado}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </main>
       </div>
     </div>

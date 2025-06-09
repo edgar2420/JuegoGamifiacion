@@ -3,7 +3,7 @@ import PrivateRoute from "./PrivateRoute";
 import RoleRoute from "./RoleRoute";
 
 import LoginPage from "../pages/auth/LoginPage";
-import RegisterPage from "../pages/auth/RegisterPage"; // <-- agregar
+import RegisterPage from "../pages/auth/RegisterPage";
 
 // Admin
 import DashboardAdmin from "../pages/admin/DashboardAdmin";
@@ -18,6 +18,10 @@ import TemporadasPageDocente from "../pages/docente/TemporadasPage";
 import DesempenoPage from "../pages/docente/DesempenoPage";
 import RankingPageDocente from "../pages/docente/RankingPageDocente";
 import AsignarTareasPage from "../pages/docente/AsignarTareasPage";
+import HistorialTareasPage from "../pages/docente/HistorialTareasPage";
+import LogrosEstudiantePage from "../pages/docente/LogrosEstudiantePage";
+import RetosCumplidosPage from "../pages/docente/RetosCumplidosPage";
+import DocenteCalificarTareas from "../pages/docente/DocenteCalificarTareas";
 
 // Estudiante
 import DashboardEstudiante from "../pages/estudiante/DashboardEstudiante";
@@ -133,6 +137,46 @@ const AppRouter = () => {
             <PrivateRoute>
               <RoleRoute allowedRoles={["docente"]}>
                 <AsignarTareasPage />
+              </RoleRoute>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/docente/historial-tareas"
+          element={
+            <PrivateRoute>
+              <RoleRoute allowedRoles={["docente"]}>
+                <HistorialTareasPage />
+              </RoleRoute>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/docente/calificar-tareas"
+          element={
+            <PrivateRoute>
+              <RoleRoute allowedRoles={["docente"]}>
+                <DocenteCalificarTareas />
+              </RoleRoute>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/docente/logros-estudiante"
+          element={
+            <PrivateRoute>
+              <RoleRoute allowedRoles={["docente"]}>
+                <LogrosEstudiantePage />
+              </RoleRoute>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/docente/retos-cumplidos"
+          element={
+            <PrivateRoute>
+              <RoleRoute allowedRoles={["docente"]}>
+                <RetosCumplidosPage />
               </RoleRoute>
             </PrivateRoute>
           }

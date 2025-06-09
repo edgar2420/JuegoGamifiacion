@@ -21,8 +21,13 @@ const Sidebar = () => {
   if (user?.rol === "docente") {
     links.push(
       { to: "/docente/dashboard", label: "Dashboard Docente" },
+      { to: "/docente/asignar-tareas", label: "Asignar Tareas" },
       { to: "/docente/temporadas", label: "Gestión de Temporadas" },
-      { to: "/docente/desempeno", label: "Desempeño de Estudiantes" }
+      { to: "/docente/desempeno", label: "Desempeño de Estudiantes" },
+      { to: "/docente/ranking", label: "Ranking de la Clase" },
+      { to: "/docente/historial-tareas", label: "Historial y Calificar Tareas" },
+      { to: "/docente/logros-estudiante", label: "Logros por Estudiante" },
+      { to: "/docente/retos-cumplidos", label: "Retos Cumplidos" }
     );
   }
 

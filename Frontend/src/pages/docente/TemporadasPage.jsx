@@ -1,5 +1,6 @@
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
+import TemporadasGestion from "../../components/TemporadasGestion";
 
 const TemporadasPage = () => {
   return (
@@ -8,9 +9,8 @@ const TemporadasPage = () => {
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <Navbar />
         <main style={{ padding: "1rem", overflowY: "auto" }}>
-          <h1>Gestión de Temporadas</h1>
-          <p>Aquí puedes crear, cerrar y consultar temporadas académicas.</p>
-          {/* Aquí luego puedes poner los formularios y la tabla de temporadas */}
+          <h1>Gestión de Temporadas (Docente)</h1>
+          <TemporadasGestion />
         </main>
       </div>
     </div>

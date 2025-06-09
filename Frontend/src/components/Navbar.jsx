@@ -21,11 +21,16 @@ const Navbar = () => {
         color: "#fff",
       }}
     >
-      {/* Logo / Home */}
+      {/* Logo o nombre de app */}
       <div>
         <Link
           to={user ? `/${user.rol}/dashboard` : "/"}
-          style={{ color: "#fff", textDecoration: "none", fontWeight: "bold" }}
+          style={{
+            color: "#fff",
+            textDecoration: "none",
+            fontWeight: "bold",
+            fontSize: "20px",
+          }}
         >
           EduClass
         </Link>
@@ -38,7 +43,17 @@ const Navbar = () => {
             <span>
               Hola, <strong>{user.correo}</strong> ({user.rol})
             </span>
-            <button onClick={handleLogout} style={{ cursor: "pointer" }}>
+            <button
+              onClick={handleLogout}
+              style={{
+                background: "transparent",
+                border: "1px solid #fff",
+                color: "#fff",
+                padding: "5px 10px",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
               Cerrar sesión
             </button>
           </>
