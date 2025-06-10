@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { login as loginService } from "../../api/auth";
 
@@ -42,34 +42,55 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "auto", padding: "1rem" }}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "10px" }}>
-          <label>Correo:</label>
-          <input
-            type="email"
-            value={correo}
-            onChange={(e) => setCorreo(e.target.value)}
-            required
-            style={{ width: "100%" }}
-          />
+    <div className="auth-container">
+      <div className="brand-name">
+        <span className="text-primary">Edu</span>
+        <span>Class</span>
+      </div>
+      <div className="auth-frame">
+        <div className="auth-content">
+          <h1 className="auth-title">EduClass</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="form-floating mb-3">
+              <input
+                type="email"
+                className="form-control custom-input"
+                id="email"
+                placeholder="ejemplo@correo.com"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                required
+              />
+              <label htmlFor="email">Correo electrónico</label>
+            </div>
+            <div className="form-floating mb-4">
+              <input
+                type="password"
+                className="form-control custom-input"
+                id="password"
+                placeholder="Contraseña"
+                value={contrasena}
+                onChange={(e) => setContrasena(e.target.value)}
+                required
+              />
+              <label htmlFor="password">Contraseña</label>
+            </div>
+            {error && (
+              <div className="alert alert-danger" role="alert">
+                {error}
+              </div>
+            )}
+            <button type="submit" className="btn btn-primary w-100 py-2">
+              Iniciar sesión
+            </button>
+            <div className="text-center mt-3">
+              <Link to="/register" className="text-primary text-decoration-none">
+                Registrarse
+              </Link>
+            </div>
+          </form>
         </div>
-        <div style={{ marginBottom: "10px" }}>
-          <label>Contraseña:</label>
-          <input
-            type="password"
-            value={contrasena}
-            onChange={(e) => setContrasena(e.target.value)}
-            required
-            style={{ width: "100%" }}
-          />
-        </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <button type="submit" style={{ width: "100%" }}>
-          Iniciar sesión
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

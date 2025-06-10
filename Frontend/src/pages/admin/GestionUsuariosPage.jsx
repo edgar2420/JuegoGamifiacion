@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Card, Form, Table, Container, Row, Col, Alert } from 'react-bootstrap';
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import { obtenerUsuarios, crearUsuario, eliminarUsuario } from "../../api/usuario";
@@ -68,86 +69,135 @@ const GestionUsuariosPage = () => {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
+    <div className="d-flex min-vh-100 bg-light">
       <Sidebar />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div className="flex-grow-1 d-flex flex-column">
         <Navbar />
-        <main style={{ padding: "1rem", overflowY: "auto" }}>
-          <h1>Gestión de Usuarios</h1>
+        <Container fluid className="p-4">
+          <h1 className="mb-4 text-dark">Gestión de Usuarios</h1>
 
-          <h2>Crear nuevo usuario</h2>
-          <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
-            <div>
-              <label>Nombre:</label>
-              <input
-                type="text"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Correo:</label>
-              <input
-                type="email"
-                name="correo"
-                value={formData.correo}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Contraseña:</label>
-              <input
-                type="password"
-                name="contrasena"
-                value={formData.contrasena}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Rol:</label>
-              <select
-                name="rol"
-                value={formData.rol}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="admin">Admin</option>
-                <option value="docente">Docente</option>
-                <option value="estudiante">Estudiante</option>
-              </select>
-            </div>
-            <Button type="submit">Crear Usuario</Button>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-          </form>
+          <Card className="mb-4 shadow-sm border-0">
+            <Card.Header className="bg-dark text-white py-3">
+              <h5 className="mb-0">Crear nuevo usuario</h5>
+            </Card.Header>
+            <Card.Body className="bg-white">
+              <Form onSubmit={handleSubmit}>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Nombre</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="nombre"
+                        value={formData.nombre}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Correo electrónico</Form.Label>
+                      <Form.Control
+                        type="email"
+                        name="correo"
+                        value={formData.correo}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-          <h2>Lista de usuarios</h2>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Rol</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usuarios.map((usuario) => (
-                <tr key={usuario.id} style={{ textAlign: "center", borderBottom: "1px solid #ddd" }}>
-                  <td>{usuario.nombre}</td>
-                  <td>{usuario.correo}</td>
-                  <td>{usuario.rol}</td>
-                  <td>
-                    <Button onClick={() => handleEliminar(usuario.id)}>Eliminar</Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </main>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Contraseña</Form.Label>
+                      <Form.Control
+                        type="password"
+                        name="contrasena"
+                        value={formData.contrasena}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Rol</Form.Label>
+                      <Form.Select
+                        name="rol"
+                        value={formData.rol}
+                        onChange={handleInputChange}
+                        required
+                      >
+                        <option value="estudiante">Estudiante</option>
+                        <option value="docente">Docente</option>
+                        <option value="admin">Administrador</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
+
+                <div className="text-end">
+                  <Button type="submit" variant="dark">
+                    <i className="bi bi-person-plus me-2"></i>
+                    Crear Usuario
+                  </Button>
+                </div>
+              </Form>
+            </Card.Body>
+          </Card>
+
+          <Card className="shadow-sm border-0">
+            <Card.Header className="bg-dark text-white py-3">
+              <h5 className="mb-0">Lista de usuarios</h5>
+            </Card.Header>
+            <Card.Body className="bg-white">
+              <div className="table-responsive">
+                <Table hover bordered>
+                  <thead className="bg-dark text-white">
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Correo</th>
+                      <th>Rol</th>
+                      <th className="text-center">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {usuarios.map((usuario) => (
+                      <tr key={usuario.id}>
+                        <td>{usuario.nombre}</td>
+                        <td>{usuario.correo}</td>
+                        <td>
+                          <span className={`badge ${
+                            usuario.rol === 'admin' ? 'bg-dark' : 
+                            usuario.rol === 'docente' ? 'bg-success' : 
+                            'bg-secondary'
+                          }`}>
+                            {usuario.rol}
+                          </span>
+                        </td>
+                        <td className="text-center">
+                          <Button 
+                            variant="dark"
+                            size="sm"
+                            onClick={() => handleEliminar(usuario.id)}
+                          >
+                            <i className="bi bi-trash me-1"></i>
+                            Eliminar
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            </Card.Body>
+          </Card>
+        </Container>
       </div>
     </div>
   );

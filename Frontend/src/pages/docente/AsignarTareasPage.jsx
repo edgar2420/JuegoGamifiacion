@@ -70,74 +70,78 @@ const AsignarTareasPage = () => {
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
+    <div className="d-flex" style={{ height: "100vh" }}>
       <Sidebar />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div className="flex-grow-1 d-flex flex-column">
         <Navbar />
-        <main style={{ padding: "1rem", overflowY: "auto" }}>
-          <h1>Asignar Tareas</h1>
+        <main className="p-3 overflow-auto">
+          <h1 className="mb-4">Asignar Tareas</h1>
 
-          <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
-            <div>
-              <label>Título:</label>
+          <form onSubmit={handleSubmit} className="mb-4 card p-3">
+            <div className="mb-3">
+              <label className="form-label">Título:</label>
               <input
                 type="text"
+                className="form-control"
                 name="titulo"
                 value={formData.titulo}
                 onChange={handleInputChange}
                 required
               />
             </div>
-            <div>
-              <label>Fecha de inicio:</label>
+            <div className="mb-3">
+              <label className="form-label">Fecha de inicio:</label>
               <input
                 type="date"
+                className="form-control"
                 name="fecha_inicio"
                 value={formData.fecha_inicio}
                 onChange={handleInputChange}
                 required
               />
             </div>
-            <div>
-              <label>Fecha de fin:</label>
+            <div className="mb-3">
+              <label className="form-label">Fecha de fin:</label>
               <input
                 type="date"
+                className="form-control"
                 name="fecha_fin"
                 value={formData.fecha_fin}
                 onChange={handleInputChange}
                 required
               />
             </div>
-            <Button type="submit">Asignar Tarea</Button>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            <Button type="submit" className="btn btn-primary">
+              Asignar Tarea
+            </Button>
+            {error && <div className="alert alert-danger mt-3">{error}</div>}
           </form>
 
-          <h2>Listado de Tareas Asignadas</h2>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th>Título</th>
-                <th>Fecha de inicio</th>
-                <th>Fecha de entrega</th>
-                <th>Estudiante</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tareas.map((tarea) => (
-                <tr
-                  key={tarea.id}
-                  style={{ textAlign: "center", borderBottom: "1px solid #ddd" }}
-                >
-                  <td>{tarea.titulo}</td>
-                  <td>{tarea.fecha_inicio}</td>
-                  <td>{tarea.fecha_entrega}</td>
-                  <td>{tarea.estudiante?.nombre}</td>
-                  <td>{tarea.estado}</td>
+          <h2 className="mb-3">Listado de Tareas Asignadas</h2>
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered">
+              <thead className="table-dark">
+                <tr>
+                  <th>Título</th>
+                  <th>Fecha de inicio</th>
+                  <th>Fecha de entrega</th>
+                  <th>Estudiante</th>
+                  <th>Estado</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {tareas.map((tarea) => (
+                  <tr key={tarea.id}>
+                    <td>{tarea.titulo}</td>
+                    <td>{tarea.fecha_inicio}</td>
+                    <td>{tarea.fecha_entrega}</td>
+                    <td>{tarea.estudiante?.nombre}</td>
+                    <td>{tarea.estado}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </main>
       </div>
     </div>

@@ -15,12 +15,10 @@ import RankingPageAdmin from "../pages/admin/RankingPage";
 // Docente
 import DashboardDocente from "../pages/docente/DashboardDocente";
 import TemporadasPageDocente from "../pages/docente/TemporadasPage";
-import DesempenoPage from "../pages/docente/DesempenoPage";
 import RankingPageDocente from "../pages/docente/RankingPageDocente";
 import AsignarTareasPage from "../pages/docente/AsignarTareasPage";
 import HistorialTareasPage from "../pages/docente/HistorialTareasPage";
 import LogrosEstudiantePage from "../pages/docente/LogrosEstudiantePage";
-import RetosCumplidosPage from "../pages/docente/RetosCumplidosPage";
 import DocenteCalificarTareas from "../pages/docente/DocenteCalificarTareas";
 
 // Estudiante
@@ -30,214 +28,198 @@ import TareasPage from "../pages/estudiante/TareasPage";
 import LogrosPage from "../pages/estudiante/LogrosPage";
 import RankingPageEstudiante from "../pages/estudiante/RankingPage";
 
+import MainLayout from "../layouts/MainLayout";
+
 const AppRouter = () => {
   return (
     <Router>
-      <Routes>
-        {/* Login y Register público */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+      <MainLayout>
+        <Routes>
+          {/* Login y Register público */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
-        {/* Rutas Admin */}
-        <Route
-          path="/admin/dashboard"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["admin"]}>
-                <DashboardAdmin />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin/usuarios"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["admin"]}>
-                <GestionUsuariosPage />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin/logros"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["admin"]}>
-                <GestionLogrosPage />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin/temporadas"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["admin"]}>
-                <GestionTemporadasPage />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin/ranking"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["admin"]}>
-                <RankingPageAdmin />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
+          {/* Rutas Admin */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["admin"]}>
+                  <DashboardAdmin />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/usuarios"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["admin"]}>
+                  <GestionUsuariosPage />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/logros"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["admin"]}>
+                  <GestionLogrosPage />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/temporadas"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["admin"]}>
+                  <GestionTemporadasPage />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/ranking"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["admin"]}>
+                  <RankingPageAdmin />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
 
-        {/* Rutas Docente */}
-        <Route
-          path="/docente/dashboard"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["docente"]}>
-                <DashboardDocente />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/docente/temporadas"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["docente"]}>
-                <TemporadasPageDocente />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/docente/desempeno"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["docente"]}>
-                <DesempenoPage />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/docente/ranking"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["docente"]}>
-                <RankingPageDocente />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/docente/asignar-tareas"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["docente"]}>
-                <AsignarTareasPage />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/docente/historial-tareas"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["docente"]}>
-                <HistorialTareasPage />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/docente/calificar-tareas"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["docente"]}>
-                <DocenteCalificarTareas />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/docente/logros-estudiante"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["docente"]}>
-                <LogrosEstudiantePage />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/docente/retos-cumplidos"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["docente"]}>
-                <RetosCumplidosPage />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
+          {/* Rutas Docente */}
+          <Route
+            path="/docente/dashboard"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["docente"]}>
+                  <DashboardDocente />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/docente/temporadas"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["docente"]}>
+                  <TemporadasPageDocente />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/docente/ranking"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["docente"]}>
+                  <RankingPageDocente />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/docente/asignar-tareas"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["docente"]}>
+                  <AsignarTareasPage />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/docente/historial-tareas"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["docente"]}>
+                  <HistorialTareasPage />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/docente/calificar-tareas"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["docente"]}>
+                  <DocenteCalificarTareas />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/docente/logros-estudiante"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["docente"]}>
+                  <LogrosEstudiantePage />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
 
-        {/* Rutas Estudiante */}
-        <Route
-          path="/estudiante/dashboard"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["estudiante"]}>
-                <DashboardEstudiante />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/estudiante/perfil"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["estudiante"]}>
-                <PerfilEstudiantePage />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/estudiante/tareas"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["estudiante"]}>
-                <TareasPage />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/estudiante/logros"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["estudiante"]}>
-                <LogrosPage />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/estudiante/ranking"
-          element={
-            <PrivateRoute>
-              <RoleRoute allowedRoles={["estudiante"]}>
-                <RankingPageEstudiante />
-              </RoleRoute>
-            </PrivateRoute>
-          }
-        />
+          {/* Rutas Estudiante */}
+          <Route
+            path="/estudiante/dashboard"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["estudiante"]}>
+                  <DashboardEstudiante />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/estudiante/perfil"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["estudiante"]}>
+                  <PerfilEstudiantePage />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/estudiante/tareas"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["estudiante"]}>
+                  <TareasPage />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/estudiante/logros"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["estudiante"]}>
+                  <LogrosPage />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/estudiante/ranking"
+            element={
+              <PrivateRoute>
+                <RoleRoute allowedRoles={["estudiante"]}>
+                  <RankingPageEstudiante />
+                </RoleRoute>
+              </PrivateRoute>
+            }
+          />
 
-        {/* Redirección por defecto */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
+          {/* Redirección por defecto */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </MainLayout>
     </Router>
   );
 };

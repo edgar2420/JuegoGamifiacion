@@ -11,62 +11,51 @@ const Navbar = () => {
   };
 
   return (
-    <nav
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "1rem",
-        backgroundColor: "#333",
-        color: "#fff",
-      }}
-    >
-      {/* Logo o nombre de app */}
-      <div>
-        <Link
-          to={user ? `/${user.rol}/dashboard` : "/"}
-          style={{
-            color: "#fff",
-            textDecoration: "none",
-            fontWeight: "bold",
-            fontSize: "20px",
-          }}
-        >
-          EduClass
-        </Link>
-      </div>
-
-      {/* Menú derecho */}
-      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        {user ? (
-          <>
-            <span>
-              Hola, <strong>{user.correo}</strong> ({user.rol})
-            </span>
+    <nav className="navbar navbar-dark bg-dark">
+      <div className="container-fluid">
+        <div className="d-flex align-items-center">
+          {user && (
             <button
-              onClick={handleLogout}
-              style={{
-                background: "transparent",
-                border: "1px solid #fff",
-                color: "#fff",
-                padding: "5px 10px",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
+              className="btn btn-outline-light me-2 d-lg-none"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#sidebar"
             >
-              Cerrar sesión
+              <i className="bi bi-list"></i>
             </button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" style={{ color: "#fff", textDecoration: "none" }}>
-              Iniciar sesión
-            </Link>
-            <Link to="/register" style={{ color: "#fff", textDecoration: "none" }}>
-              Registrarse
-            </Link>
-          </>
-        )}
+          )}
+          <Link
+            to={user ? `/${user.rol}/dashboard` : "/"}
+            className="navbar-brand mb-0 h1"
+          >
+            EduClass
+          </Link>
+        </div>
+
+        <div className="d-flex align-items-center">
+          {user ? (
+            <>
+              <span className="text-light me-3">
+                Hola, <strong>{user.correo}</strong> ({user.rol})
+              </span>
+              <button
+                onClick={handleLogout}
+                className="btn btn-outline-light"
+              >
+                Cerrar sesión
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="btn btn-outline-light me-2">
+                Iniciar sesión
+              </Link>
+              <Link to="/register" className="btn btn-outline-light">
+                Registrarse
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );

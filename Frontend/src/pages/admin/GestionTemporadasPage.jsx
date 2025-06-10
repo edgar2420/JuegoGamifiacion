@@ -4,14 +4,26 @@ import TemporadasGestion from "../../components/TemporadasGestion";
 
 const GestionTemporadasPage = () => {
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
+    <div className="d-flex min-vh-100 bg-light">
       <Sidebar />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <div className="flex-grow-1 d-flex flex-column">
         <Navbar />
-        <main style={{ padding: "1rem", overflowY: "auto" }}>
-          <h1>Gestión de Temporadas (Admin)</h1>
-          <TemporadasGestion />
-        </main>
+        <div className="container-fluid p-4">
+          <div className="row">
+            <div className="col">
+              <h1 className="mb-4 text-dark">Gestión de Temporadas</h1>
+              
+              <div className="card shadow-sm border-0">
+                <div className="card-header bg-dark text-white py-3">
+                  <h5 className="mb-0">Administración de Temporadas</h5>
+                </div>
+                <div className="card-body bg-white">
+                  <TemporadasGestion />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
