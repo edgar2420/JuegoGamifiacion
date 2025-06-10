@@ -8,10 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: "pendiente"
     },
-    archivoEntrega: {
-      type: DataTypes.STRING,
-      allowNull: true
-    }
+    archivoEntrega: { type: DataTypes.STRING, allowNull: true },
+    comentario: { type: DataTypes.STRING, allowNull: true },
+    errores: { type: DataTypes.INTEGER, allowNull: true, defaultValue: 0 }
   });
 
   return Tarea;

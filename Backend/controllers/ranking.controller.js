@@ -73,3 +73,29 @@ exports.obtenerRankingPorTemporada = async (req, res) => {
     res.status(500).json({ mensaje: "Error al obtener ranking de temporada", error });
   }
 };
+
+exports.obtenerRanking = async (req, res) => {
+  try {
+    // Obtener estudiantes ordenados por CC coins
+    const ranking = await Estudiante.findAll({
+      attributes: [
+        'id',
+        'nombre',
+        [sequelize.fn('SUM', sequelize.col('moneda_ccs.cantidad')), 'cc_coins'],
+        [sequelize.fn('COUNT', sequelize.col('logros.id')), 'total_logros'],
+        [sequelize.fn('MAX', sequelize.col('moneda_ccs.fecha')), 'ultima_actualizacion']
+      ],
+      include: [
+        { model: MonedaCC, attributes: [] },
+        { model: Logro, attributes: [] }
+      ],
+      group: ['Estudiante.id'],
+      order: [[sequelize.literal('cc_coins'), 'DESC']]
+    });
+
+    res.json(ranking);
+  } catch (error) {
+    console.error("Error al obtener ranking:", error);
+    res.status(500).json({ mensaje: "Error al obtener ranking", error });
+  }
+};

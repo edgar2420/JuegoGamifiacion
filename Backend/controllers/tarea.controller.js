@@ -40,8 +40,10 @@ exports.obtenerTareasPorEstudiante = async (req, res) => {
           as: "docente",
           attributes: ["id", "nombre"]
         }
-      ]
+      ],
+      order: [["fecha_inicio", "DESC"]]
     });
+
     res.json(tareas);
   } catch (error) {
     console.error("Error al obtener tareas por estudiante:", error);
@@ -144,25 +146,27 @@ exports.entregarTarea = async (req, res) => {
     const nombreArchivo = `${Date.now()}-${archivo.name}`;
     const rutaDestino = path.join(__dirname, "..", "public", "entregas");
 
+    // Crear la carpeta si no existe
     if (!fs.existsSync(rutaDestino)) {
       fs.mkdirSync(rutaDestino, { recursive: true });
     }
 
     const rutaFinal = path.join(rutaDestino, nombreArchivo);
 
-    archivo.mv(rutaFinal, async err => {
+    // Mover el archivo y actualizar la base de datos
+    archivo.mv(rutaFinal, async (err) => {
       if (err) {
         console.error("Error al mover el archivo:", err);
         return res.status(500).json({ mensaje: "Error al guardar archivo" });
       }
 
+      // ✅ ACTUALIZA correctamente el campo del modelo
       tarea.estado = "entregada";
-      tarea.archivo_entrega = nombreArchivo;
+      tarea.archivoEntrega = nombreArchivo; // <--- CAMPO CORRECTO
       await tarea.save();
 
-      res.json({ mensaje: "Tarea entregada correctamente", archivo: nombreArchivo });
+      return res.json({ mensaje: "Tarea entregada correctamente", archivo: nombreArchivo });
     });
-
   } catch (error) {
     console.error("Error al entregar tarea:", error);
     res.status(500).json({ mensaje: "Error interno al entregar tarea", error });
@@ -172,7 +176,7 @@ exports.entregarTarea = async (req, res) => {
 // Actualizar estado de la tarea (calificar)
 exports.calificarTarea = async (req, res) => {
   try {
-    const { estado } = req.body;
+    const { estado, comentario, errores } = req.body;
     const tareaId = req.params.id;
 
     const tarea = await Tarea.findByPk(tareaId);
@@ -185,21 +189,27 @@ exports.calificarTarea = async (req, res) => {
       return res.status(400).json({ mensaje: "Solo se pueden calificar tareas entregadas" });
     }
 
-    // Actualizar estado
+    // Actualizar campos
     tarea.estado = estado;
+    tarea.comentario = comentario;
+    tarea.errores = errores;
     await tarea.save();
 
     // Asignar ClassCoins
     let cantidad = 0;
-    let motivo = "tarea";
 
-    if (estado === "correcta") cantidad = 1;
-    else if (estado === "tarde" || estado === "con_errores") cantidad = 0.5;
+    if (estado === "correcta") {
+      cantidad = 1;
+    } else if (estado === "tarde" || (estado === "con_errores" && errores <= 3)) {
+      cantidad = 0.5;
+    } else if (estado === "con_errores" && errores > 3) {
+      cantidad = 0;
+    }
 
     if (cantidad > 0) {
       await MonedaCC.create({
         cantidad,
-        motivo,
+        motivo: "tarea",
         fecha: new Date(),
         estudianteId: tarea.estudianteId
       });

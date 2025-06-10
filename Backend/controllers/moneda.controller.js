@@ -10,7 +10,15 @@ exports.obtenerMonedasPorEstudiante = async (req, res) => {
       order: [["fecha", "DESC"]]
     });
 
-    res.json(monedas);
+    // Calcular el total de monedas
+    const totalCC = monedas.reduce((sum, moneda) => sum + (moneda.cantidad || 0), 0);
+    
+    res.json({
+      monedas: monedas,
+      totalCC: totalCC,
+      ultimaActualizacion: monedas[0]?.fecha || null
+    });
+
   } catch (error) {
     console.error("Error al obtener monedas:", error);
     res.status(500).json({ mensaje: "Error al obtener monedas", error });
